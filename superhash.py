@@ -51,23 +51,24 @@ def superhash(anything, try_anyway=True):
     
     xhash = 0
 
-    try:
-        # does it have attributes we should take into account?
-        xhash ^= superhash(anything.__dict__)
-    except AttributeError:
-        pass
+    if not isinstance(anything, dict):
+        try:
+            # does it have attributes we should take into account?
+            xhash ^= superhash(anything.__dict__)
+        except AttributeError:
+            pass
     
     # is it functional?
     try:
         xhash ^= superhash(anything.func_code)  # Python 2.x (for x >= 6 at least)
         return hash(xhash)
-    except AttributeError:
+    except (AttributeError, KeyError):
         try:
             xhash ^= superhash(anything.__code__)   # Python 3
             return hash(xhash)
-        except AttributeError:
+        except (AttributeError, KeyError):
             pass
-    except AttributeError:
+    except (AttributeError, KeyError):
         pass
     
     try:

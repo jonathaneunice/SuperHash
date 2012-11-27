@@ -9,5 +9,6 @@ setup(
     description='Hash anything',
     long_description=open('README.md').read(),
     py_modules=['superhash'],
+    test_requires=['stuf>=0.9.10'],
     url='https://github.com/uniphil/SuperHash',
     )

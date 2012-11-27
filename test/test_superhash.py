@@ -93,6 +93,33 @@ class TestHasher(unittest.TestCase):
 		self.assertHash(f2, f3)
 		
 		self.assertEqual(sh.superhash(f1), sh.superhash(f2))
+		
+	def testOrderedDict(self):
+		import sys
+		if sys.version_info[:2] < (2, 7):
+			return
+		from collections import OrderedDict
+		items = [('a', 1), ('c', 'a string'), ('b', 2), ('d', 5.0455)]
+		d = dict(items)
+		od = OrderedDict(items)
+		
+		self.assertEqual(d, od)
+		
+		self.assertEqual(sh.superhash(d), sh.superhash(od))
+		
+	def testStuf(self):
+		try:
+			from stuf import stuf
+		except ImportError:
+			return
+		
+		items = [('a', 1), ('c', 'a string'), ('b', 2), ('d', 5.0455)]
+		d = dict(items)
+		s = stuf(items)
+		
+		self.assertEqual(d, s)
+		
+		self.assertEqual(sh.superhash(d), sh.superhash(s))
 
 	def testNestedDict(self):
 		self.assertHash({1:{1:1}}, {1:{1:2}})
